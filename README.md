@@ -41,3 +41,12 @@ The cron secret lives only in Vault (`signal_cron_secret`) and is never printed.
 - "Quiet" means no verified public signal, not that the VC is inactive.
 - `vc_pipeline` rows marked `[sample]` are SAMPLE DATA. Replace with Vikram's real list (insert as postgres via Table Editor/SQL, never via service_role).
 - Status supports exactly `Yet to reach out` and `Waiting for response`, per the brief.
+
+## Dashboard (`dashboard/`)
+TanStack Start app designed in Lovable (project "Strict Build"), exported as a snapshot. It talks to Supabase directly with the publishable key; access is enforced by RLS (`dashboard_users` allow-list), not by the app.
+
+- Local: `cd dashboard && npm install && npm run dev`
+- Deploy (Vercel): import this repo, set **Root Directory** to `dashboard`. `vercel.json` sets the build to `NITRO_PRESET=vercel npm run build`. No environment variables needed.
+- After the first deploy, add the Vercel URL in Supabase → Authentication → URL Configuration (Site URL and Redirect URLs), or magic links will point elsewhere.
+- Lovable edits do not sync here automatically: re-export from Lovable (Code → Download codebase) and replace `dashboard/`.
+- Add a user: `insert into dashboard_users values ('person@example.com');`
