@@ -42,6 +42,9 @@ The cron secret lives only in Vault (`signal_cron_secret`) and is never printed.
 - `vc_pipeline` rows marked `[sample]` are SAMPLE DATA. Replace with Vikram's real list (insert as postgres via Table Editor/SQL, never via service_role).
 - Status supports exactly `Yet to reach out` and `Waiting for response`, per the brief.
 
+## Public demo mode (current)
+Migration `20261012000006_public_demo_access.sql` removes sign-in: anyone with the dashboard URL can read everything, edit Vikram's own columns, add VCs and press Run now (limited to one scan start per hour). The four signal columns and deletes stay blocked for everyone except the signal system. **Revert this before loading Vikram's real data** (the revert statements are in the migration's header comment) and restore the sign-in screen in the dashboard.
+
 ## Dashboard (`dashboard/`)
 TanStack Start app designed in Lovable (project "Strict Build"), exported as a snapshot. It talks to Supabase directly with the publishable key; access is enforced by RLS (`dashboard_users` allow-list), not by the app.
 
