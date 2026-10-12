@@ -42,8 +42,12 @@ The cron secret lives only in Vault (`signal_cron_secret`) and is never printed.
 - `vc_pipeline` rows marked `[sample]` are SAMPLE DATA. Replace with Vikram's real list (insert as postgres via Table Editor/SQL, never via service_role).
 - Status supports exactly `Yet to reach out` and `Waiting for response`, per the brief.
 
-## Public demo mode (current)
-Migration `20261012000006_public_demo_access.sql` removes sign-in: anyone with the dashboard URL can read everything, edit Vikram's own columns, add VCs and press Run now (limited to one scan start per hour). The four signal columns and deletes stay blocked for everyone except the signal system. **Revert this before loading Vikram's real data** (the revert statements are in the migration's header comment) and restore the sign-in screen in the dashboard.
+## Dashboard access
+Sign-in is email + password (no emails sent, so no rate limits). Access needs two things: an account with a password, and the email on the allow-list.
+- Set or reset a password (Supabase SQL editor; the user signs in once by magic link first, or create the user under Authentication → Users → Add user with "Auto confirm"):
+  `update auth.users set encrypted_password = extensions.crypt('NEW-PASSWORD', extensions.gen_salt('bf')) where email = 'person@example.com';`
+- Allow-list: `insert into dashboard_users values ('person@example.com');`
+- Migration 006 briefly made the dashboard public; 007 reverted it. Run now is limited to one scan start per hour.
 
 ## Dashboard (`dashboard/`)
 TanStack Start app designed in Lovable (project "Strict Build"), exported as a snapshot. It talks to Supabase directly with the publishable key; access is enforced by RLS (`dashboard_users` allow-list), not by the app.
