@@ -46,7 +46,7 @@ The cron secret lives only in Vault (`signal_cron_secret`) and is never printed.
 TanStack Start app designed in Lovable (project "Strict Build"), exported as a snapshot. It talks to Supabase directly with the publishable key; access is enforced by RLS (`dashboard_users` allow-list), not by the app.
 
 - Local: `cd dashboard && npm install && npm run dev`
-- Deploy (Vercel): import this repo, set **Root Directory** to `dashboard`. `vercel.json` sets the build to `NITRO_PRESET=vercel npm run build`. No environment variables needed.
+- Deploy (Vercel): import **saahil1209/vc-signal-dashboard** (a copy of this folder with the app at the root, made with `git subtree split --prefix dashboard`). `vercel.json` sets the build to `NITRO_PRESET=vercel npm run build`. No environment variables needed. To update it: `git subtree split --prefix dashboard -b d && git push https://github.com/saahil1209/vc-signal-dashboard.git d:main && git branch -D d`.
 - After the first deploy, add the Vercel URL in Supabase → Authentication → URL Configuration (Site URL and Redirect URLs), or magic links will point elsewhere.
 - Lovable edits do not sync here automatically: re-export from Lovable (Code → Download codebase) and replace `dashboard/`.
 - Add a user: `insert into dashboard_users values ('person@example.com');`
